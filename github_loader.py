@@ -60,6 +60,3 @@ def load_issues(issues):
         docs.append(doc)
     
     return docs
-
-# Call function to fetch git issues from an example repository
-fetch_github("techwithtim", "Flask-Web-App-Tutorial", "issues")
