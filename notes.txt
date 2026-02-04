@@ -1,0 +1,17 @@
+Hello, World!
+### Summary of GitHub Issues Related to Flashing Messages
+
+1. **FLASH MESSAGES NOT SHOWING IN LOGIN PAGE**  
+   - **Author:** infinityGamer9  
+   - **Created at:** 2024-04-03  
+   - **Description:** The user reports that flash messages are not appearing on the login page, despite working on the signup page. They mention that pressing the login button does not yield any response and seek assistance.
+
+2. **Alert message in home page**  
+   - **Author:** BFWheels  
+   - **Created at:** 2024-01-04  
+   - **Description:** The user encountered an alert message prompting them to log in when accessing a page. They implemented the `@login_required` decorator as instructed but noted that the alert should not appear initially and disappears upon refreshing the page.
+
+3. **Only blank screen**  
+   - **Author:** rigolef  
+   - **Created at:** 2024-02-21  
+   - **Description:** The user states that their code runs without errors, but they only see a blank page when accessing the application, indicating a potential issue with rendering messages or content.

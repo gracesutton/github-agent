@@ -6,6 +6,7 @@ from langchain_astradb import AstraDBVectorStore
 from langchain.agents import create_agent
 from langchain_core.tools import create_retriever_tool
 from github_loader import fetch_github_issues
+from note import note_tool
 
 load_dotenv()
 
@@ -82,7 +83,7 @@ retriever_tool = create_retriever_tool(
 
 # Create the OpenAI chat model
 model = ChatOpenAI(model="gpt-4o-mini", temperature=0) #known-stable, agent-friendly model
-tools = [retriever_tool]
+tools = [retriever_tool, note_tool]
 
 system_prompt = """
 
@@ -118,12 +119,12 @@ while(question := input("\nAsk about GitHub issues (or 'q' to quit): ")) != "q":
     result = agent.invoke(
         {"messages": [{"role": "user", "content": question}]}) # Pass question to agent
     
-    # Stream agent execution step-by-step
-    for chunk in agent.stream(result, stream_mode="updates"):
-        print("\n--- update ---")
-        print(chunk)
+    # # Stream agent execution step-by-step
+    # for chunk in agent.stream(result, stream_mode="updates"):
+    #     print("\n--- update ---")
+    #     print(chunk)
 
-    print("\n Final result: " + result["messages"][-1].content) # Print agent's response
+    print("\n", result["messages"][-1].content) # Print agent's response
 
     # result["messages"] is the full conversation history of this request 
     # (system prompt, user message, any intermediate reasoning steps, tool calls, tool outputs, final answer)
