@@ -37,22 +37,35 @@ def load_issues(issues):
 
     # Iterate through each issue entry
     for entry in issues:
+
+        title = entry.get("title", "").strip()
+        body = entry.get("body") or ""
+
+        author = entry.get("user", {}).get("login", "unknown")
+        created_at = entry.get("created_at", "unknown")
+
+        labels = [label.get("name") for label in entry.get("labels", [])]
+
+        # Build page content (what gets embedded & shown to the model)
+        page_content = f"""
+
+Title: {title}
+Author: {author}
+Created at: {created_at}
+
+{body}
+""".strip()
+
         # Extract relevant metadata and content into a dictionary
         metadata = {
-            "author": entry["user"]["login"],
-            "comments": entry["comments"],
-            "labels": entry["labels"],
-            "created_at": entry["created_at"],
+            "author": author,
+            "created_at":created_at,
+            "labels": labels,
+            "comments": entry.get("comments", 0)
         }
 
-        data = entry["title"]
-
-        # Append body if it exists
-        if entry["body"]:
-            data += "\n\n" + entry["body"]
-
-        # Create Document object and append to docs list
-        doc = Document(page_content=data, metadata=metadata)
+        # Create LangChain Document object and append to docs list
+        doc = Document(page_content=page_content, metadata=metadata)
         docs.append(doc)
     
     return docs
