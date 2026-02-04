@@ -3,10 +3,10 @@ import os
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_astradb import AstraDBVectorStore
-from langchain.agents import create_tool_calling_agent
-from langchain.agents import AgentExecutor
-from langchain.tools import create_retriever_tool
-from langchainhub import hub
+# from langchain.agents.openai_tools.base import create_openai_tools_agent
+# from langchain.agents import AgentExecutor
+# from langchain.tools import create_retriever_tool
+# from langchainhub import hub
 from github_loader import fetch_github_issues
 
 load_dotenv()
@@ -29,8 +29,8 @@ def connect_to_vstore():
     # Initialize AstraDB vector store
     vstore = AstraDBVectorStore(
         api_endpoint=api_endpoint,
-        app_token=app_token,
-        keyspace=keyspace,
+        token=app_token,
+        namespace=keyspace,
         collection_name="github_issues",
         embedding=embeddings
     )
@@ -56,7 +56,10 @@ if add_to_vstore:
     vstore = connect_to_vstore()
     vstore.add_documents(issues)
 
-    results = vstore.similarity_search("flash messages", k=3) # k is the number of similar documents to retrieve
-    
+    # Example query to retrieve similar issues
+    search_term = "flash messages"
+    print("\nSearching for issues regarding:", search_term)
+    results = vstore.similarity_search(search_term, k=3) # k is the number of similar documents to retrieve
+
     for res in results:
-        print(f"* {res.page_content} {res.metadata}")
+        print(f"\n* {res.page_content} \n {res.metadata}\n")

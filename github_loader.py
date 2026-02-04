@@ -19,13 +19,10 @@ def fetch_github(owner, repo, endpoint):
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200: # 200 OK
-        data = response.json()
+        return response.json()
     else:
         print("Error:", response.status_code, response.text)
         return []
-
-    print(data)
-    return data
 
 # Function to fetch the git issues
 def fetch_github_issues(owner, repo):
@@ -44,7 +41,6 @@ def load_issues(issues):
         metadata = {
             "author": entry["user"]["login"],
             "comments": entry["comments"],
-            "body": entry["body"],
             "labels": entry["labels"],
             "created_at": entry["created_at"],
         }
@@ -53,7 +49,7 @@ def load_issues(issues):
 
         # Append body if it exists
         if entry["body"]:
-            data += entry["body"]
+            data += "\n\n" + entry["body"]
 
         # Create Document object and append to docs list
         doc = Document(page_content=data, metadata=metadata)
